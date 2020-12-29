@@ -14,3 +14,25 @@ HEADERS = {
 def get_html(url, params=None):
     r = requests.get(url, headers=HEADERS, params=params)
     return r
+
+
+def get_content(html):
+    soup = BeautifulSoup(html, 'html.parser')
+    items = soup.find_all('a', class_='mw-category')
+    print(items)
+
+    mammals = []
+    for item in items:
+        mammals.append({
+            'title': item.find('div', class_="mw-category").get_text(strip=True),
+            'link': HOST + item.find('div', class_="mw-category").get('href')
+        })
+    print(mammals)
+
+
+def parse():
+    html = get_html(URL)
+    if html.status_code == 200:
+        get_content(html.text)
+    else:
+        print('Error')
