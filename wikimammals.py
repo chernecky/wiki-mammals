@@ -15,12 +15,16 @@ def get_html(url, params=None):
     r = requests.get(url, headers=HEADERS, params=params)
     return r
 
-<<<<<<< HEAD
-=======
+
+def get_pages(html):
+    soup = BeautifulSoup(html, 'html.parser')
+    pages = soup.find_all('div', class_='mw-category')
+    print(pages)
+
 
 def get_content(html):
     soup = BeautifulSoup(html, 'html.parser')
-    items = soup.find_all('a', class_='mw-category')
+    items = soup.find_all('div', class_='mw-category')
     print(items)
 
     mammals = []
@@ -35,7 +39,13 @@ def get_content(html):
 def parse():
     html = get_html(URL)
     if html.status_code == 200:
-        get_content(html.text)n
+        mammals = []
+        pages_count = get_pages(html.text)
+        for page in range(1, pages_count + 1):
+            print(f'Парсинг страницы {page} из {pages_count}...')
+            html = get_html(URL, params={'page': page})
+            mammals.extend(get_content(html.text))
+        print(mammals)
     else:
         print('Error')
 
