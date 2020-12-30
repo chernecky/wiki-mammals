@@ -35,7 +35,7 @@ def get_content(html):
 def parse():
     html = get_html(URL)
     if html.status_code == 200:
-        get_content(html.text)
+        get_content(html.text)n
     else:
         print('Error')
 
