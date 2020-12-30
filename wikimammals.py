@@ -4,6 +4,7 @@ import csv
 
 URL = "https://ru.wikipedia.org/wiki/Категория:Животные_по_алфавиту"
 HOST = 'https://ru.wikipedia.org'
+FILE = 'cars.csv'
 HEADERS = {
     'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko)'
                   ' Chrome/85.0.4183.102 YaBrowser/20.9.3.189 (beta) Yowser/2.5 Safari/537.36',
@@ -36,6 +37,15 @@ def get_content(html):
     return mammals
 
 
+def save_file(items, path):
+    with open(path, 'w', newline='') as file:
+        writer = csv.writer(file, delimiter=';' )
+        writer.writerow(['title', 'link'])
+        for item in items:
+            writer.writerow([item['title'], item['link']])
+
+
+
 def parse():
     html = get_html(URL)
     if html.status_code == 200:
@@ -45,7 +55,8 @@ def parse():
             print(f'Парсинг страницы {page} из {pages_count}...')
             html = get_html(URL, params={'page': page})
             mammals.extend(get_content(html.text))
-        print(mammals)
+            save_file(mammals, FILE)
+        print(f'Получено {len(mammals)} автомобилей')
     else:
         print('Error')
 
