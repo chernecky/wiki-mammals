@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import csv
+import os
 
 URL = "https://ru.wikipedia.org/wiki/Категория:Животные_по_алфавиту"
 HOST = 'https://ru.wikipedia.org'
@@ -47,6 +48,8 @@ def save_file(items, path):
 
 
 def parse():
+    URL = input('Введите url: ')
+    URL = URL.strip()
     html = get_html(URL)
     if html.status_code == 200:
         mammals = []
@@ -57,6 +60,7 @@ def parse():
             mammals.extend(get_content(html.text))
             save_file(mammals, FILE)
         print(f'Получено {len(mammals)} автомобилей')
+        os.startfile(FILE)
     else:
         print('Error')
 
