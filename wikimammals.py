@@ -27,7 +27,7 @@ def get_content(html):
             'title': item.find('div', class_="mw-category").get_text(strip=True),
             'link': HOST + item.find('div', class_="mw-category").get('href')
         })
-    print(mammals)
+    return mammals
 
 
 def parse():
